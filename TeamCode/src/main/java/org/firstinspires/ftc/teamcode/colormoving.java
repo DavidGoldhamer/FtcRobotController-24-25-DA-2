@@ -299,10 +299,12 @@ public class colormoving extends LinearOpMode {
       moveRobot((int) drive, (int) turn);
       telemetry.addLine("");
       telemetry.addLine(" Area Density Aspect  Center");
-      if (!myBlobs) {
-        moveRobot(100, 0);
-      }
-      // Display the size (area) and center location for each Blob.
+
+        if (myBlobs.isEmpty()) {
+        } else {
+          moveRobot(100, 0);
+        }
+        // Display the size (area) and center location for each Blob.
       for (ColorBlobLocatorProcessor.Blob myBlob_item : myBlobs) {
         myBlob = myBlob_item;
         // Get a "best-fit" bounding box (called "boxFit", of type RotatedRect) for this blob.
@@ -333,7 +335,7 @@ public class colormoving extends LinearOpMode {
    * This can only be called after calling initAprilTag, and only works for webcams.
    */
   private void setManualExposure(int exposureMs, int gain) {
-    VisionPortal visionPortal;
+    VisionPortal visionPortal = null;
     ExposureControl exposureControl;
     GainControl gainControl;
 
