@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @TeleOp(name = "colormoving (Blocks to Java)")
-public class colormoving extends LinearOpMode {
+public class  colormoving extends LinearOpMode {
 
   private SparkFunOTOS sensor_otos;
   private DcMotor viperSlide;
