@@ -28,4 +28,6 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'androidx.appcompat:appcompat-resources:1.7.0'
     implementation 'com.acmerobotics.dashboard:dashboard:0.4.15'
+    implementation 'com.sparkfun:OTOS-Library:1.0.0'
+
 }

@@ -49,6 +49,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
+
 /*
  * Simple mecanum drive hardware implementation for REV hardware.
  */
@@ -293,13 +295,14 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     @Override
     public double getRawExternalHeading() {
-        return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+        return otos.getHeading(); // Ensure this method returns heading in radians
     }
 
     @Override
     public Double getExternalHeadingVelocity() {
-        return (double) imu.getRobotAngularVelocity(AngleUnit.RADIANS).zRotationRate;
+        return otos.getAngularVelocity(); // Ensure this method returns angular velocity in radians per second
     }
+
 
     public static TrajectoryVelocityConstraint getVelocityConstraint(double maxVel, double maxAngularVel, double trackWidth) {
         return new MinVelocityConstraint(Arrays.asList(
