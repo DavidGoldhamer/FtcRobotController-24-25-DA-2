@@ -299,13 +299,35 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     @Override
     public double getRawExternalHeading() {
-        return otos.getHeading(); // Ensure this method returns heading in radians
+        SparkFunOTOS.Pose2D position = otos.getPosition();
+        double heading = position.h;
+        return heading; // Ensure this method returns heading in radians
     }
+
+
+    private double previousHeading = 0;
+    private long previousTime = System.currentTimeMillis();
 
     @Override
     public Double getExternalHeadingVelocity() {
-        return otos.getAngularVelocity(); // Ensure this method returns angular velocity in radians per second
+        // Calculate angular velocity manually
+        SparkFunOTOS.Pose2D currentPosition = otos.getPosition();
+        double currentHeading = currentPosition.h;
+        long currentTime = System.currentTimeMillis();
+        long deltaTime = currentTime - previousTime;
+
+        // Avoid division by zero
+        if (deltaTime == 0) return 0.0;
+
+        double angularVelocity = (currentHeading - previousHeading) / (deltaTime / 1000.0); // rad/s
+
+        // Update previous values
+        previousHeading = currentHeading;
+        previousTime = currentTime;
+
+        return angularVelocity;
     }
+
 
     //original one
 //    @Override
