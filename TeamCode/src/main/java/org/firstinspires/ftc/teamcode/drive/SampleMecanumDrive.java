@@ -30,16 +30,13 @@ import com.acmerobotics.roadrunner.trajectory.constraints.ProfileAccelerationCon
 import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryAccelerationConstraint;
 import com.acmerobotics.roadrunner.trajectory.constraints.TrajectoryVelocityConstraint;
 import com.qualcomm.hardware.lynx.LynxModule;
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.hardware.VoltageSensor;
 import com.qualcomm.robotcore.hardware.configuration.typecontainers.MotorConfigurationType;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequenceBuilder;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequenceRunner;
@@ -78,8 +75,8 @@ public class SampleMecanumDrive extends MecanumDrive {
     private final DcMotorEx rightFront;
     private final List<DcMotorEx> motors;
 
-    private final IMU imu;
-    private final SparkFunOTOS otos; // Added field for SparkFun OTOS
+    //private final IMU imu;
+    private final SparkFunOTOS OTOS; // Added field for SparkFun OTOS
     private final VoltageSensor batteryVoltageSensor;
 
     private final List<Integer> lastEncPositions = new ArrayList<>();
@@ -100,13 +97,13 @@ public class SampleMecanumDrive extends MecanumDrive {
         }
 
         // TODO: adjust the names of the following hardware devices to match your configuration
-        imu = hardwareMap.get(IMU.class, "sensor_OTOS");
+/*        imu = hardwareMap.get(IMU.class, "sensor_OTOS");
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
                 DriveConstants.LOGO_FACING_DIR, DriveConstants.USB_FACING_DIR));
-        imu.initialize(parameters);
+        imu.initialize(parameters);*/
 
         // Replace IMU initialization with OTOS initialization
-        otos = hardwareMap.get(SparkFunOTOS.class, "sensor_OTOS");
+        OTOS = hardwareMap.get(SparkFunOTOS.class, "sensor_OTOS");
 
         leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
         leftRear = hardwareMap.get(DcMotorEx.class, "leftRear");
@@ -132,6 +129,10 @@ public class SampleMecanumDrive extends MecanumDrive {
         }
 
         // TODO: reverse any motors using DcMotor.setDirection()
+        leftFront.setDirection(DcMotor.Direction.REVERSE);
+        leftRear.setDirection(DcMotor.Direction.REVERSE);
+
+
 
         List<Integer> lastTrackingEncPositions = new ArrayList<>();
         List<Integer> lastTrackingEncVels = new ArrayList<>();
@@ -299,7 +300,7 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     @Override
     public double getRawExternalHeading() {
-        SparkFunOTOS.Pose2D position = otos.getPosition();
+        SparkFunOTOS.Pose2D position = OTOS.getPosition();
         double heading = position.h;
         return heading; // Ensure this method returns heading in radians
     }
@@ -311,7 +312,7 @@ public class SampleMecanumDrive extends MecanumDrive {
     @Override
     public Double getExternalHeadingVelocity() {
         // Calculate angular velocity manually
-        SparkFunOTOS.Pose2D currentPosition = otos.getPosition();
+        SparkFunOTOS.Pose2D currentPosition = OTOS.getPosition();
         double currentHeading = currentPosition.h;
         long currentTime = System.currentTimeMillis();
         long deltaTime = currentTime - previousTime;
