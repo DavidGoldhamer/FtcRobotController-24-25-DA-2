@@ -79,6 +79,7 @@ public class SampleMecanumDrive extends MecanumDrive {
     private final List<DcMotorEx> motors;
 
     private final IMU imu;
+    private final SparkFunOTOS otos; // Added field for SparkFun OTOS
     private final VoltageSensor batteryVoltageSensor;
 
     private final List<Integer> lastEncPositions = new ArrayList<>();
@@ -103,6 +104,9 @@ public class SampleMecanumDrive extends MecanumDrive {
         IMU.Parameters parameters = new IMU.Parameters(new RevHubOrientationOnRobot(
                 DriveConstants.LOGO_FACING_DIR, DriveConstants.USB_FACING_DIR));
         imu.initialize(parameters);
+
+        // Replace IMU initialization with OTOS initialization
+        otos = hardwareMap.get(SparkFunOTOS.class, "sensor_OTOS");
 
         leftFront = hardwareMap.get(DcMotorEx.class, "leftFront");
         leftRear = hardwareMap.get(DcMotorEx.class, "leftRear");
