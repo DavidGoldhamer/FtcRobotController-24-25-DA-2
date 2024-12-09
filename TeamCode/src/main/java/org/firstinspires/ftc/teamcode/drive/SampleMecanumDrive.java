@@ -307,6 +307,17 @@ public class SampleMecanumDrive extends MecanumDrive {
         return otos.getAngularVelocity(); // Ensure this method returns angular velocity in radians per second
     }
 
+    //original one
+//    @Override
+//    public double getRawExternalHeading() {
+//        return imu.getRobotYawPitchRollAngles().getYaw(AngleUnit.RADIANS);
+//    }
+//
+//    @Override
+//    public Double getExternalHeadingVelocity() {
+//        return (double) imu.getRobotAngularVelocity(AngleUnit.RADIANS).zRotationRate;
+//    }
+
 
     public static TrajectoryVelocityConstraint getVelocityConstraint(double maxVel, double maxAngularVel, double trackWidth) {
         return new MinVelocityConstraint(Arrays.asList(
